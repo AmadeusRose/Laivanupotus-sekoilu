@@ -112,10 +112,8 @@ struct game_state{
 		//Last row that was written.
 		int LastRowIndex; 
 	}TextBox;
-	cursor Cursor; 
-	
+	cursor Cursor; 	
 	int* CursorData;
-	
 	grid Grid; 
 }; 
 static void SetCursorDirection(game_state* State,int Dir) {
@@ -231,6 +229,7 @@ static bool PlacePlayerShip(game_state* State,ship_placement_data Data) {
 		}
 	}
 	State->RequestUpdate  = 1;
+	free(Coords); 
 	return PlaceShip;
 }; 
 static void UpdateCursorData(game_state* State) {
@@ -321,7 +320,7 @@ static void Render(game_state* State){
 		printf("\n");
 
 		grid* Grid = &State->Grid; 
-		bool DrawCursor = State->Cursor.Enabled;
+	
 
 		if (Grid->Data) {
 			for_y(Grid->Height) {
@@ -409,7 +408,7 @@ int main()
 	game_state* State = (game_state*)malloc(sizeof(game_state)); 
 	memset(State, 0, sizeof(game_state));
 	RequestUpdate = 1; 
-	int ShipsToPlace = 8;
+	
 	ship_placement_data PlayerShipData = CreateShipPlacementData();
 	if(InitializeState(State)){
 		bool Running = 1; 
